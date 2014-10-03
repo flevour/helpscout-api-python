@@ -1,7 +1,7 @@
 helpscout-api-python
 ====================
 
-Python wrapper for the Help Scout API 
+Python wrapper for the Help Scout API
 
 ## Installation:
 `git clone git@github.com/mccannm11/helpscout-api-python`
@@ -11,21 +11,14 @@ Example Usage: API
 ---------------------
 
 ```
-import hsapi
+import helpscout
 
-client = hsapi.ApiClient()
-client.API_KEY = "your-api-key-here"
+client = helpscout.Client()
+client.API_KEY = "your-api-key"
 
-mailboxes = client.mailboxes()
-folders = mailboxes.folders
-for f in folders:
-    #do things here
-
-
-customer = client.customer(customer-id-here)
-if customers.socialProfiles != None:
-    for s in customers.socialProfiles:
-         #do things
+conversations = client.search_conversations({"query": "(* AND tag: 'your-tag')"})
+for conversation in conversations.items:
+  print conversation.customerEmail + "\t" + conversation.customerName
 
 ```
 
@@ -62,4 +55,7 @@ Each method can accept a field selector as an addition parameter.
 * users()
 * users_for_mailbox(int mailbox_id)
 * user(int user_id)
+
+### Search
+* search_conversations(query params)
 
