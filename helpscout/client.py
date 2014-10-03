@@ -7,7 +7,7 @@ import models
 class Client(object):
     BASE_URL = "https://api.helpscout.net/v1/"
     API_KEY = ""
-    
+
     def mailbox(self, mailbox_id, fields=None):
         url = add_fields("mailboxes/" + str(mailbox_id) + ".json", fields)
         return self.item(url, "Mailbox", 200)
@@ -39,7 +39,7 @@ class Client(object):
         return self.item(url, "Conversation", 200)
 
     def attachment_data(self, attachment_id):
-        url = "attachments/" + str(attachment_id) + "/data.json" 
+        url = "attachments/" + str(attachment_id) + "/data.json"
         json_string = self.call_server(url, 200)
         json_obj = json.loads(json_string)
         item = json_obj["item"]
@@ -66,7 +66,7 @@ class Client(object):
         return self.page(url, "User", 200)
 
     def call_server(self, url, expected_code):
-        auth =  "Basic " + self.encoded() 
+        auth =  "Basic " + self.encoded()
         headers = {'Content-Type': 'application-json'
                   , 'Accept' : 'application-json'
                   , 'Authorization' : str(auth)
@@ -79,7 +79,7 @@ class Client(object):
     def item(self, url, clazz, expected_code):
         string_json = self.call_server( url, expected_code )
         return Parser.parse(json.loads(string_json)["item"], clazz)
-        
+
     def page(self, url, clazz, expected_code):
         string_json = self.call_server(url, expected_code)
         json_obj = json.loads(string_json)
@@ -88,7 +88,7 @@ class Client(object):
             setattr(p, key, value)
         p.items = parse_list(p.items, clazz)
         return p
-    
+
     def encoded(self):
         raw = str(self.API_KEY) + ":x"
         return base64.b64encode(raw)
