@@ -65,6 +65,10 @@ class Client(object):
         url = add_fields("mailboxes/" + str(mailbox_id) + "users.json", fields)
         return self.page(url, "User", 200)
 
+    def search_conversations(self, fields=None):
+        url = add_params("search/conversations.json", fields)
+        return self.page(url, "Conversation", 200)
+
     def call_server(self, url, expected_code):
         auth =  "Basic " + self.encoded()
         headers = {'Content-Type': 'application-json'
@@ -116,6 +120,14 @@ def add_fields(url, fields):
             final_str += sep + value
             sep = ","
     return final_str
+
+def add_params(url, fields):
+    final_str = url
+    params = []
+    if fields != None and len(fields) > 0 :
+        for key in fields:
+            params.append(key + "=" + fields[key])
+    return final_str + "?" + "&".join(params)
 
 def parse(json, clazz):
     c = getattr(models, clazz)()
